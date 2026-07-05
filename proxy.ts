@@ -7,7 +7,7 @@ const PUBLIC_ROUTES = ['/login', '/register', '/forgot-password', '/', '/api/aut
 // Routes only for admins
 const ADMIN_ROUTES = ['/admin']
 
-export function middleware(request: NextRequest) {
+export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   // Allow public routes and static files
