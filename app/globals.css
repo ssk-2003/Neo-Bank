@@ -63,6 +63,13 @@ body {
   color: var(--neo-text);
   padding: 11px 14px;
   width: 100%;
+}
+.neo-input.pl-7 { padding-left: 28px; }
+.neo-input.pl-9 { padding-left: 36px; }
+.neo-input.pl-10 { padding-left: 40px; }
+.neo-input.pr-9 { padding-right: 36px; }
+.neo-input.pr-10 { padding-right: 40px; }
+.neo-input {
   font-size: 14px;
   transition: border-color 0.2s, box-shadow 0.2s;
   outline: none;
