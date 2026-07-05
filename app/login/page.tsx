@@ -24,8 +24,13 @@ export default function LoginPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, password }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Login failed')
+      const contentType = res.headers.get('content-type') || ''
+      const data = contentType.includes('application/json') ? await res.json() : null
+
+      if (!res.ok) {
+        const errorMsg = data?.detail || data?.error || 'Login failed'
+        throw new Error(typeof errorMsg === 'string' ? errorMsg : 'Login failed')
+      }
       storeAuth(data.user, data.accessToken)
       toast.success(`Welcome back, ${data.user.firstName}!`)
       router.push(data.user.role === 'ADMIN' ? '/admin' : '/dashboard')

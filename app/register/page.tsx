@@ -45,8 +45,13 @@ export default function RegisterPage() {
           password: form.password,
         }),
       })
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Registration failed')
+      const contentType = res.headers.get('content-type') || ''
+      const data = contentType.includes('application/json') ? await res.json() : null
+
+      if (!res.ok) {
+        const errorMsg = data?.detail || data?.error || 'Registration failed'
+        throw new Error(typeof errorMsg === 'string' ? errorMsg : 'Registration failed')
+      }
 
       storeAuth(data.user, data.accessToken)
       toast.success('Account created! Welcome to NeoBank 🎉')

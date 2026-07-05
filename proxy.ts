@@ -10,8 +10,9 @@ const ADMIN_ROUTES = ['/admin']
 export default function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl
 
-  // Allow public routes and static files
+  // Allow API routes (handled by Python FastAPI backend), public routes, and static assets
   if (
+    pathname.startsWith('/api/') ||
     PUBLIC_ROUTES.some((route) => pathname.startsWith(route)) ||
     pathname.startsWith('/_next') ||
     pathname.startsWith('/favicon') ||
