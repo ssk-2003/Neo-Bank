@@ -42,8 +42,8 @@ Make sure you have [Node.js](https://nodejs.org) (v18+) installed.
 ### 2. Installation
 Clone the repository and install dependencies:
 ```bash
-git clone https://github.com/your-username/neobank.git
-cd neobank
+git clone https://github.com/ssk-2003/Neo-Bank.git
+cd Neo-Bank
 npm install
 ```
 
