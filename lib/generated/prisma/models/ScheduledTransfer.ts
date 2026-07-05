@@ -568,6 +568,7 @@ export type ScheduledTransferCreateOrConnectWithoutUserInput = {
 
 export type ScheduledTransferCreateManyUserInputEnvelope = {
   data: Prisma.ScheduledTransferCreateManyUserInput | Prisma.ScheduledTransferCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type ScheduledTransferUpsertWithWhereUniqueWithoutUserInput = {
@@ -1413,6 +1414,7 @@ export type ScheduledTransferCreateManyArgs<ExtArgs extends runtime.Types.Extens
    * The data used to create many ScheduledTransfers.
    */
   data: Prisma.ScheduledTransferCreateManyInput | Prisma.ScheduledTransferCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1431,6 +1433,7 @@ export type ScheduledTransferCreateManyAndReturnArgs<ExtArgs extends runtime.Typ
    * The data used to create many ScheduledTransfers.
    */
   data: Prisma.ScheduledTransferCreateManyInput | Prisma.ScheduledTransferCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

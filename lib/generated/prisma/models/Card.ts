@@ -476,6 +476,7 @@ export type CardCreateOrConnectWithoutUserInput = {
 
 export type CardCreateManyUserInputEnvelope = {
   data: Prisma.CardCreateManyUserInput | Prisma.CardCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type CardUpsertWithWhereUniqueWithoutUserInput = {
@@ -1299,6 +1300,7 @@ export type CardCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Cards.
    */
   data: Prisma.CardCreateManyInput | Prisma.CardCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1317,6 +1319,7 @@ export type CardCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Cards.
    */
   data: Prisma.CardCreateManyInput | Prisma.CardCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

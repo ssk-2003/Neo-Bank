@@ -1230,6 +1230,7 @@ export type RewardPointsCreateManyArgs<ExtArgs extends runtime.Types.Extensions.
    * The data used to create many RewardPoints.
    */
   data: Prisma.RewardPointsCreateManyInput | Prisma.RewardPointsCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1248,6 +1249,7 @@ export type RewardPointsCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Ex
    * The data used to create many RewardPoints.
    */
   data: Prisma.RewardPointsCreateManyInput | Prisma.RewardPointsCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

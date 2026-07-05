@@ -618,6 +618,7 @@ export type LoanCreateOrConnectWithoutUserInput = {
 
 export type LoanCreateManyUserInputEnvelope = {
   data: Prisma.LoanCreateManyUserInput | Prisma.LoanCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type LoanUpsertWithWhereUniqueWithoutUserInput = {
@@ -1474,6 +1475,7 @@ export type LoanCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Loans.
    */
   data: Prisma.LoanCreateManyInput | Prisma.LoanCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1492,6 +1494,7 @@ export type LoanCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Loans.
    */
   data: Prisma.LoanCreateManyInput | Prisma.LoanCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */

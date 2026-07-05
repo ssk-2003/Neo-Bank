@@ -554,6 +554,7 @@ export type GoalCreateOrConnectWithoutUserInput = {
 
 export type GoalCreateManyUserInputEnvelope = {
   data: Prisma.GoalCreateManyUserInput | Prisma.GoalCreateManyUserInput[]
+  skipDuplicates?: boolean
 }
 
 export type GoalUpsertWithWhereUniqueWithoutUserInput = {
@@ -1388,6 +1389,7 @@ export type GoalCreateManyArgs<ExtArgs extends runtime.Types.Extensions.Internal
    * The data used to create many Goals.
    */
   data: Prisma.GoalCreateManyInput | Prisma.GoalCreateManyInput[]
+  skipDuplicates?: boolean
 }
 
 /**
@@ -1406,6 +1408,7 @@ export type GoalCreateManyAndReturnArgs<ExtArgs extends runtime.Types.Extensions
    * The data used to create many Goals.
    */
   data: Prisma.GoalCreateManyInput | Prisma.GoalCreateManyInput[]
+  skipDuplicates?: boolean
   /**
    * Choose, which related nodes to fetch as well
    */
