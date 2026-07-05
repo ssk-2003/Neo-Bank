@@ -1,0 +1,194 @@
+// This is your Prisma schema file
+// Using SQLite for zero-cost local development
+
+generator client {
+  provider = "prisma-client"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+model User {
+  id               String    @id @default(cuid())
+  firstName        String
+  lastName         String
+  email            String    @unique
+  phone            String?
+  password         String
+  avatar           String?
+  role             String    @default("CUSTOMER") // CUSTOMER | ADMIN
+  status           String    @default("ACTIVE")   // ACTIVE | FROZEN | SUSPENDED
+  emailVerified    Boolean   @default(false)
+  twoFactorEnabled Boolean   @default(false)
+  referralCode     String?   @unique
+  referredBy       String?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+
+  accounts             Account[]
+  sentTransactions     Transaction[] @relation("SentTransactions")
+  receivedTransactions Transaction[] @relation("ReceivedTransactions")
+  loans                Loan[]
+  budgets              Budget[]
+  cards                Card[]
+  notifications        Notification[]
+  settings             Settings?
+  rewardPoints         RewardPoints?
+  goals                Goal[]
+  scheduledTransfers   ScheduledTransfer[]
+}
+
+model Account {
+  id            String    @id @default(cuid())
+  userId        String
+  accountNumber String    @unique
+  type          String    @default("CHECKING") // CHECKING | SAVINGS | BUSINESS | INVESTMENT
+  balance       Float     @default(0)
+  currency      String    @default("USD")
+  status        String    @default("ACTIVE") // ACTIVE | FROZEN | CLOSED
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  user         User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+}
+
+model Transaction {
+  id          String   @id @default(cuid())
+  senderId    String?
+  receiverId  String?
+  accountId   String
+  amount      Float
+  type        String   // TRANSFER | DEPOSIT | WITHDRAWAL | PAYMENT
+  category    String   @default("OTHER")
+  description String?
+  status      String   @default("COMPLETED") // PENDING | COMPLETED | FAILED | CANCELLED
+  reference   String?  @unique
+  flagged     Boolean  @default(false)
+  createdAt   DateTime @default(now())
+
+  account    Account @relation(fields: [accountId], references: [id])
+  sender     User?   @relation("SentTransactions", fields: [senderId], references: [id])
+  receiver   User?   @relation("ReceivedTransactions", fields: [receiverId], references: [id])
+}
+
+model Loan {
+  id           String   @id @default(cuid())
+  userId       String
+  amount       Float
+  interestRate Float    @default(8.5)
+  duration     Int      // months
+  purpose      String
+  employment   String
+  income       Float
+  status       String   @default("PENDING") // PENDING | APPROVED | REJECTED | ACTIVE | CLOSED
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Budget {
+  id        String   @id @default(cuid())
+  userId    String
+  category  String
+  limit     Float
+  spent     Float    @default(0)
+  month     Int
+  year      Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, category, month, year])
+}
+
+model Card {
+  id         String   @id @default(cuid())
+  userId     String
+  cardNumber String   @unique
+  expiry     String
+  cvv        String
+  cardType   String   @default("VISA") // VISA | MASTERCARD
+  status     String   @default("ACTIVE") // ACTIVE | FROZEN | CANCELLED
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  title     String
+  message   String
+  type      String   @default("INFO") // INFO | SUCCESS | WARNING | ERROR
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id                 String   @id @default(cuid())
+  userId             String   @unique
+  theme              String   @default("dark")
+  language           String   @default("en")
+  currency           String   @default("USD")
+  emailNotifications Boolean  @default(true)
+  pushNotifications  Boolean  @default(true)
+  transferAlerts     Boolean  @default(true)
+  loginAlerts        Boolean  @default(true)
+  marketingEmails    Boolean  @default(false)
+  twoFactorEnabled   Boolean  @default(false)
+  updatedAt          DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model RewardPoints {
+  id            String   @id @default(cuid())
+  userId        String   @unique
+  points        Int      @default(0)
+  totalEarned   Int      @default(0)
+  totalRedeemed Int      @default(0)
+  tier          String   @default("BRONZE") // BRONZE | SILVER | GOLD | PLATINUM
+  updatedAt     DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Goal {
+  id           String    @id @default(cuid())
+  userId       String
+  name         String
+  targetAmount Float
+  savedAmount  Float     @default(0)
+  deadline     DateTime?
+  category     String    @default("OTHER")
+  status       String    @default("ACTIVE") // ACTIVE | COMPLETED | CANCELLED
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model ScheduledTransfer {
+  id          String   @id @default(cuid())
+  userId      String
+  toEmail     String
+  amount      Float
+  category    String   @default("OTHER")
+  description String?
+  frequency   String   // ONCE | WEEKLY | MONTHLY
+  nextRunAt   DateTime
+  status      String   @default("ACTIVE") // ACTIVE | PAUSED | CANCELLED
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
